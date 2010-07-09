@@ -1,0 +1,83 @@
+iCCsh Help
+
+The following commands are available. Commands may be spread across multiple
+lines by ending lines with a '\' character.
+
+:d
+:decl
+:declare {identifier} {declaration} [ = {initializer} ]
+    Declare (and optionally initialize) a variable.
+    If only an identifier is given, then the rest of the arguments will be
+    read from successive lines until a blank line is encountered.
+    For simple declarations, the command name and identifier may be omitted.
+    e.g. :declare f void (*f)(void) = &foo
+    e.g. :declare coords
+     ... struct {
+     ...     int x, y;
+     ... } coords = { 4, 2 }
+     ... 
+    e.g. const int x = 42
+      => :declare x const int x = 42
+
+:eval {code}
+    Evaluate the given C code.
+    If no arguments are given, then the arguments will be read from
+    successive lines until a blank line is encountered.
+    The command name may be omitted so long as the code does not trigger any
+    other commands.
+    e.g. :eval x = 42
+    e.g. :eval
+     ... x ^= y;
+     ... y ^= x;
+     ... x ^= y;
+     ... 
+    e.g. for(int i = 0; i < 10; i++) \
+             printf("%d\n", i);
+      => :eval for(...
+
+:f
+:func
+:function {identifier} {function-definition}
+    Define a function.
+    If only an identifier is given, then the rest of the arguments will be
+    read from successive lines until a blank line is encountered.
+    e.g. :function hello
+     ... void hello(const char *name) {
+     ...     printf("Hello %s!", name);
+     ... }
+     ... 
+
+:h
+:help
+    Display this help text.
+
+:i
+:inc
+:include {file}
+    Include the given header file.
+    e.g. :include stdio.h
+
+:info {identifier}
+    Display information about the given identifier.
+    The command name may be omitted.
+    e.g. foo_bar_42
+      => :info foo_bar_42
+
+:l
+:lib
+:library {library}
+    Link against the given library (equivalent to -l compiler option).
+    e.g. :library m
+
+:p
+:printf {format} {arg}[, args...]
+    Print the given formatted output.
+    If the first character of the format string is '%', then the command name
+    may be omitted.
+    e.g. :printf x=%d\ny=%d x, y
+    e.g. %d strlen("foo")
+      => :printf %d strlen("foo")
+
+:q
+:quit
+    Quit the shell.

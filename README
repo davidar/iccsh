@@ -1,0 +1,4 @@
+iCCsh is an interactive C Compiler shell.
+
+Run `make && ./iccsh` to compile and execute. Type 'help' within the shell for
+usage information.

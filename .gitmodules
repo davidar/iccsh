@@ -1,0 +1,9 @@
+[submodule "thirdparty/hashtable"]
+	path = thirdparty/hashtable
+	url = git://github.com/davidar/c-hashtable.git
+[submodule "thirdparty/tinycc"]
+	path = thirdparty/tinycc
+	url = git://repo.or.cz/tinycc.git
+[submodule "thirdparty/cutil"]
+	path = thirdparty/cutil
+	url = git://github.com/davidar/cutil.git
