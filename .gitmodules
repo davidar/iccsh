@@ -7,3 +7,6 @@
 [submodule "thirdparty/cutil"]
 	path = thirdparty/cutil
 	url = git://github.com/davidar/cutil.git
+[submodule "thirdparty/linenoise"]
+	path = thirdparty/linenoise
+	url = git://github.com/davidar/linenoise.git

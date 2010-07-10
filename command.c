@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <linenoise.h>
+
 #include <util/io.h>
 #include <util/string.h>
 
@@ -32,16 +34,24 @@
 #include "compiler.h"
 #include "symbols.h"
 
-#define INPUT_BLOCK() input("... ", "... ", input_cb)
-
-static int input_cb(char *line) {
-    return line[strlen(line)-1] != '\n';
+static char *input_block(void) {
+    char *line = strdup("");
+    char *s;
+    while((s = linenoise("... "))) {
+        if(!*s)
+            return line;
+        linenoiseHistoryAdd(s);
+        astrcatf(&line, s);
+        astrcat(&line, "\n");
+    }
+    free(line);
+    return NULL;
 }
 
 static void define(char *args, char delim) {
     const char *name = args;
     char *decl = split(args);
-    if(!decl) decl = INPUT_BLOCK();
+    if(!decl) decl = input_block();
     char *defn = strdup(decl);
     strchrr(decl, delim, 0);
 
@@ -60,7 +70,7 @@ static void command_declare(char *args) {
 }
 
 static void command_eval(char *stmt) {
-    if(!stmt) stmt = INPUT_BLOCK();
+    if(!stmt) stmt = input_block();
     TCCState *tccs = compile("", stmt);
     if(tccs) run(tccs);
 }
@@ -104,6 +114,7 @@ static void command_printf(char *args) {
 }
 
 static void command_quit(char *args) {
+    linenoiseHistorySave("history.txt");
     exit(0);
 }
 

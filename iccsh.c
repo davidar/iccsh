@@ -25,7 +25,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <util/io.h>
+#include <linenoise.h>
+
 #include <util/string.h>
 
 #include "command.h"
@@ -35,23 +36,34 @@
 
 #define VERSION "0.1dev"
 
-static int input_cb(char *line) {
-    if(line[strlen(line)-1] == '\\') {
+static char *get_line(void) {
+    char *line = linenoise(">>> ");
+    if(!line)
+        return NULL;
+    linenoiseHistoryAdd(line);
+    while(line[strlen(line)-1] == '\\') {
         line[strlen(line)-1] = 0;
-        return 1;
+        char *s = linenoise("... ");
+        if(!s) {
+            free(line);
+            return NULL;
+        }
+        linenoiseHistoryAdd(s);
+        astrcat(&line, "\n");
+        astrcatf(&line, s);
     }
-    return 0;
+    return line;
 }
 
 int main(int argc, char **argv) {
     compiler_init();
     symbols_init();
+    linenoiseHistoryLoad("history.txt");
     printf("iCCsh version %s\n", VERSION);
     printf("type 'help' for usage information\n");
     while(1) {
-        char *inp = input(">>> ", "... ", input_cb);
+        char *inp = get_line();
         if(inp == NULL) {
-            printf("\n");
             printf(":quit\n");
             command("quit")(NULL);
         }
