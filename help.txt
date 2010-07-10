@@ -31,9 +31,9 @@ lines by ending lines with a '\' character.
      ... y ^= x;
      ... x ^= y;
      ... 
-    e.g. for(int i = 0; i < 10; i++) \
+    e.g. for(i = 0; i < 10; i++) \
              printf("%d\n", i);
-      => :eval for(...
+      => :eval for(i = 0; i < 10; i++) ...
 
 :f
 :func

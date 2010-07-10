@@ -107,6 +107,10 @@ static void command_quit(char *args) {
     exit(0);
 }
 
+static void command_not_found(char *args) {
+    printf("Command not found\n");
+}
+
 struct command {
     const char *name;
     void (*fn)(char *);
@@ -142,7 +146,7 @@ static struct command commands[] = {
     { "quit",     command_quit     },
     { "q",        command_quit     },
 
-    { NULL,       NULL         }
+    { NULL,       command_not_found}
 };
 
 void (*command(const char *name))(char *) {
