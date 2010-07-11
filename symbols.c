@@ -62,6 +62,10 @@ void add_symbol(const char *name, void *addr, const char *decl) {
     insert_symbol(symbol_table, s->name, s);
 }
 
+void delete_symbol(const char *name) {
+    remove_symbol(symbol_table, name);
+}
+
 void provide_symbols(TCCState *tccs) {
     if(hashtable_count(symbol_table)) {
         struct hashtable_itr *itr = hashtable_iterator(symbol_table);

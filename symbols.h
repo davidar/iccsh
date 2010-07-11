@@ -14,6 +14,11 @@ void symbols_init(void);
 void add_symbol(const char *name, void *addr, const char *decl);
 
 /**
+ * Delete the symbol with the given name from the table.
+ */
+void delete_symbol(const char *name);
+
+/**
  * Add all symbols currenlty in the table to the given TCC state.
  */
 void provide_symbols(TCCState *tccs);

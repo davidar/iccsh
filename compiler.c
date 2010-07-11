@@ -20,6 +20,7 @@
 * THE SOFTWARE.
 */
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -34,11 +35,11 @@
 
 #define SOURCE_TEMPLATE "%s\n;\nvoid main(void) {\n%s\n;\n}\n"
 
-static struct list *includes;
+static struct list *directives;
 static struct list *libs;
 
 void compiler_init(void) {
-    includes = create_list();
+    directives = create_list();
     libs = create_list();
 }
 
@@ -49,20 +50,18 @@ TCCState *compile(const char *global, const char *local) {
     tcc_set_output_type(tccs, TCC_OUTPUT_MEMORY);
     provide_symbols(tccs);
 
-    for(struct list_node *n = list_first(libs); n; n = list_node_next(n)) {
+    struct list_node *n;
+    for(n = list_first(libs); n; n = list_node_next(n)) {
         const char *name = list_node_value(n);
         DEBUG_PRINTF("Adding lib%s\n", name);
         tcc_add_library(tccs, name);
     }
 
-    char *incs = strdup("");
-    for(struct list_node *n = list_first(includes); n; n = list_node_next(n)) {
-        const char *name = list_node_value(n);
-        asprintfa(&incs, "#include <%s>\n", name);
-    }
-
     char *buf = strdup("");
-    astrcatf(&buf, incs);
+    for(n = list_first(directives); n; n = list_node_next(n)) {
+        const char *directive = list_node_value(n);
+        astrcat(&buf, directive);
+    }
     astrcatf(&buf, symbol_declarations());
     asprintfa(&buf, SOURCE_TEMPLATE, global, local);
 
@@ -92,10 +91,11 @@ void run(TCCState *tccs) {
     tcc_delete(tccs);
 }
 
-void add_include(const char *file) {
-    list_append(includes, (void *) strdup(file));
+void add_directive(const char *directive) {
+    char *line; asprintf(&line, "%s\n", directive);
+    list_append(directives, (void *) line);
 }
 
-void add_library(const char *name) {
-    list_append(libs, (void *) strdup(name));
+void add_library(const char *lib) {
+    list_append(libs, (void *) strdup(lib));
 }

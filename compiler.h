@@ -24,13 +24,13 @@ void *relocate(TCCState *tccs);
 void run(TCCState *tccs);
 
 /**
- * Include the given header in subsequent compilations.
+ * Include the given preprocessor directive in subsequent compilations.
  */
-void add_include(const char *file);
+void add_directive(const char *directive);
 
 /**
  * Link against the given library in subsequent compilations.
  */
-void add_library(const char *name);
+void add_library(const char *lib);
 
 #endif

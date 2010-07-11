@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
     symbols_init();
     linenoiseHistoryLoad("history.txt");
     printf("iCCsh version %s\n", VERSION);
-    printf("type 'help' for usage information\n");
+    printf("type 'help' for usage information, 'quit' to exit\n");
     while(1) {
         char *inp = get_line();
         if(inp == NULL) {
@@ -81,8 +81,9 @@ int main(int argc, char **argv) {
             echo_command = 0;
         } else if(*line == '%') {
             command_name = "printf";
-        } else if(strcmp(line, "help") == 0) {
-            command_name = "help";
+        } else if(strcmp(line, "help") == 0 ||
+                strcmp(line, "quit") == 0) {
+            command_name = line;
             args = "";
         } else if(is_identifier(line)) {
             command_name = "info";

@@ -19,6 +19,22 @@ lines by ending lines with a '\' character.
     e.g. const int x = 42
       => :declare x const int x = 42
 
+:def
+:define {macro-definition}
+    Define a preprocessor macro.
+    If no arguments are given, then the arguments will be read from
+    successive lines until a blank line is encountered.
+    Trailing '\' are automatically added to the ends of lines as necessary.
+    e.g. :define foo bar  =>  #define foo bar
+    e.g. :define
+     ... foo(x,y,z)       =>  #define foo(x,y,z) \
+     ...     bar(x,y,z)           bar(x,y,z)
+
+:del
+:delete {identifier}
+    Delete the symbol with the given name.
+    e.g. :delete x
+
 :eval {code}
     Evaluate the given C code.
     If no arguments are given, then the arguments will be read from
@@ -55,7 +71,10 @@ lines by ending lines with a '\' character.
 :inc
 :include {file}
     Include the given header file.
-    e.g. :include stdio.h
+    Angle brackets and the .h extension may be omitted.
+    e.g. :include "stdio.h"  =>  #include "stdio.h"
+    e.g. :include <stdio.h>  =>  #include <stdio.h>
+    e.g. :include stdio      =>  #include <stdio.h>
 
 :info {identifier}
     Display information about the given identifier.
@@ -81,3 +100,8 @@ lines by ending lines with a '\' character.
 :q
 :quit
     Quit the shell.
+
+:undef
+:undefine {macro}
+    Undefine a preprocessor macro.
+    e.g. :undefine foo  =>  #undef foo
