@@ -94,13 +94,15 @@ void run(TCCState *tccs) {
         DEBUG_PRINTF("Running...\n");
         void (*main)(void) = tcc_get_symbol(tccs, "main");
         if(main) {
+            fflush(stdout);
             pid_t pid = fork();
             if(pid == 0) {
                 main();
                 exit(0);
             }
             int status;
-            waitpid(pid, &status, NULL);
+            waitpid(pid, &status, 0);
+            fflush(stdout);
             if(WIFEXITED(status)) {
                 int exit_status = WEXITSTATUS(status);
                 if(exit_status)

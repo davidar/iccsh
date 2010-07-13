@@ -111,6 +111,7 @@ static void command_help(char *args) {
         free(line);
     }
     fclose(fp);
+    fflush(stdout);
 }
 
 static void command_include(char *file) {
@@ -127,10 +128,12 @@ static void command_include(char *file) {
 static void command_info(char *name) {
     if(!name) return;
     const char *decl = symbol_declaration(name);
-    if(decl)
+    if(decl) {
         printf("%s\n", decl);
-    else
-        printf("'%s' has not been declared\n", name);
+        fflush(stdout);
+    } else {
+        fprintf(stderr, "'%s' has not been declared\n", name);
+    }
 }
 
 static void command_library(char *lib) {
@@ -160,7 +163,7 @@ static void command_undefine(char *macro) {
 }
 
 static void command_not_found(char *args) {
-    printf("Command not found\n");
+    fprintf(stderr, "Command not found\n");
 }
 
 struct command {
