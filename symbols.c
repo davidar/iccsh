@@ -55,6 +55,7 @@ void symbols_init(void) {
 }
 
 void add_symbol(const char *name, void *addr, const char *decl) {
+    if(!addr) return;
     struct symbol *s = malloc(sizeof(struct symbol));
     s->name = strdup(name);
     s->addr = addr;

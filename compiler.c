@@ -21,9 +21,13 @@
 */
 
 #define _GNU_SOURCE
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #include <util/debug.h>
 #include <util/io.h>
@@ -86,8 +90,26 @@ void *relocate(TCCState *tccs) {
 }
 
 void run(TCCState *tccs) {
-    if(relocate(tccs))
-        ((void (*)(void)) tcc_get_symbol(tccs, "main"))();
+    if(relocate(tccs)) {
+        DEBUG_PRINTF("Running...\n");
+        void (*main)(void) = tcc_get_symbol(tccs, "main");
+        if(main) {
+            pid_t pid = fork();
+            if(pid == 0) {
+                main();
+                exit(0);
+            }
+            int status;
+            waitpid(pid, &status, NULL);
+            if(WIFEXITED(status)) {
+                int exit_status = WEXITSTATUS(status);
+                if(exit_status)
+                    fprintf(stderr, "Exited with status %d\n", exit_status);
+            } else if(WIFSIGNALED(status)) {
+                psignal(WTERMSIG(status), NULL);
+            }
+        }
+    }
     tcc_delete(tccs);
 }
 
