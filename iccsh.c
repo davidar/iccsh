@@ -59,12 +59,12 @@ int main(int argc, char **argv) {
     compiler_init();
     symbols_init();
     linenoiseHistoryLoad("history.txt");
-    printf("iCCsh version %s\n", VERSION);
-    printf("type 'help' for usage information, 'quit' to exit\n");
+    fprintf(stderr, "iCCsh version %s\n", VERSION);
+    fprintf(stderr, "type 'help' for usage information, 'quit' to exit\n");
     while(1) {
         char *inp = get_line();
         if(inp == NULL) {
-            printf(":quit\n");
+            fprintf(stderr, ":quit\n");
             command("quit")(NULL);
         }
         char *line = inp; trim(&line);
@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
             char *args_short = strdup(args);
             char *nl = strchr(args_short, '\n');
             if(nl) strcpy(nl, "...");
-            printf(":%s %s\n", command_name, args_short);
+            fprintf(stderr, ":%s %s\n", command_name, args_short);
             free(args_short);
         }
         command(command_name)(args);
