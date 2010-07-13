@@ -35,6 +35,7 @@
 #include <util/string.h>
 
 #include "compiler.h"
+#include "memory.h"
 #include "symbols.h"
 
 #define SOURCE_TEMPLATE "%s\n;\nvoid main(void) {\n%s\n;\n}\n"
@@ -82,7 +83,7 @@ void *relocate(TCCState *tccs) {
     int size = tcc_relocate(tccs, NULL);
     if(size == -1)
         return NULL;
-    void *mem = malloc(size);
+    void *mem = memory_alloc(size);
     tcc_relocate(tccs, mem);
     DEBUG_PRINTF("Relocated to %p..%p (%d bytes)\n",
             mem, mem + size - 1, size);
@@ -122,4 +123,9 @@ void add_directive(const char *directive) {
 
 void add_library(const char *lib) {
     list_append(libs, (void *) strdup(lib));
+}
+
+void compiler_close(void) {
+    list_destroy(directives, 1);
+    list_destroy(libs, 1);
 }

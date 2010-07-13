@@ -33,4 +33,9 @@ void add_directive(const char *directive);
  */
 void add_library(const char *lib);
 
+/**
+ * Free the compiler data structures.
+ */
+void compiler_close(void);
+
 #endif

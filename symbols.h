@@ -34,4 +34,9 @@ char *symbol_declarations(void);
  */
 const char *symbol_declaration(const char *name);
 
+/**
+ * Free the symbol table.
+ */
+void symbols_close(void);
+
 #endif

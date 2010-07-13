@@ -31,6 +31,7 @@
 
 #include "command.h"
 #include "compiler.h"
+#include "memory.h"
 #include "symbols.h"
 #include "token.h"
 
@@ -56,6 +57,7 @@ static char *get_line(void) {
 }
 
 int main(int argc, char **argv) {
+    memory_init();
     compiler_init();
     symbols_init();
     linenoiseHistoryLoad("history.txt");

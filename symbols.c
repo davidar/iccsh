@@ -97,3 +97,17 @@ const char *symbol_declaration(const char *name) {
         return NULL;
     return symbol->decl;
 }
+
+void symbols_close(void) {
+    if(hashtable_count(symbol_table)) {
+        struct hashtable_itr *itr = hashtable_iterator(symbol_table);
+        do {
+            struct symbol *s = hashtable_iterator_value(itr);
+            free((void *) s->name);
+            free((void *) s->decl);
+            free(s);
+        } while(hashtable_iterator_remove(itr));
+        free(itr);
+    }
+    hashtable_destroy(symbol_table, 0);
+}

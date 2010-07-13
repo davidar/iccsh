@@ -32,6 +32,7 @@
 
 #include "command.h"
 #include "compiler.h"
+#include "memory.h"
 #include "symbols.h"
 
 static char *input_block(void) {
@@ -153,6 +154,9 @@ static void command_printf(char *args) {
 
 static void command_quit(char *args) {
     linenoiseHistorySave("history.txt");
+    symbols_close();
+    compiler_close();
+    memory_close();
     exit(0);
 }
 
