@@ -19,9 +19,10 @@ TCCState *compile(const char *global, const char *local);
 void *relocate(TCCState *tccs);
 
 /**
- * Relocate the given TCC state and run the main function.
+ * Relocate the given TCC state and run the main function. The second
+ * parameter controls whether to execute the function in sandbox mode.
  */
-void run(TCCState *tccs);
+void run(TCCState *tccs, int sandbox);
 
 /**
  * Include the given preprocessor directive in subsequent compilations.

@@ -35,6 +35,8 @@
 #include "memory.h"
 #include "symbols.h"
 
+static int sandbox = 1;
+
 static char *input_block(void) {
     char *line = strdup("");
     char *s;
@@ -97,7 +99,7 @@ static void command_eval(char *stmt) {
     if(!stmt) stmt = input_block();
     if(!stmt) return;
     TCCState *tccs = compile("", stmt);
-    if(tccs) run(tccs);
+    if(tccs) run(tccs, sandbox);
 }
 
 static void command_function(char *args) {
@@ -160,6 +162,12 @@ static void command_quit(char *args) {
     exit(0);
 }
 
+static void command_sandbox(char *arg) {
+    if(!arg) return;
+    split(arg);
+    sandbox = string_in(arg, "on", "true", "yes", "enable", "1", NULL);
+}
+
 static void command_undefine(char *macro) {
     if(!macro) return;
     char *directive; asprintf(&directive, "#undef %s", macro);
@@ -210,6 +218,8 @@ static struct command commands[] = {
 
     { "quit",     command_quit     },
     { "q",        command_quit     },
+
+    { "sandbox",  command_sandbox  },
 
     { "undefine", command_undefine },
     { "undef",    command_undefine },

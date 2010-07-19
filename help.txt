@@ -101,6 +101,18 @@ lines by ending lines with a '\' character.
 :quit
     Quit the shell.
 
+:sandbox {value}
+    Set whether code should be executed in sandbox mode.
+    In sandbox mode, a separate process is created each time compiled code is
+    executed. This prevents the shell from being terminated by events such as
+    segmentation faults and calls to exit(). However, this may cause problems
+    with functions which dynamically allocate memory or modify external global
+    or static variables.
+    If the argument is "on", "true", "yes", "enable", or "1", then sandbox
+    mode is enabled. All other values disable sandbox mode.
+    Sandbox mode is enabled by default.
+    e.g. :sandbox off
+
 :undef
 :undefine {macro}
     Undefine a preprocessor macro.
