@@ -56,7 +56,13 @@ void symbols_init(void) {
 
 void add_symbol(const char *name, void *addr, const char *decl) {
     if(!addr) return;
-    struct symbol *s = malloc(sizeof(struct symbol));
+    struct symbol *s;
+    if((s = remove_symbol(symbol_table, name))) {
+        fprintf(stderr, "Warning: '%s' redeclared as '%s'\n", s->decl, decl);
+        free((void *) s->decl);
+        free(s);
+    }
+    s = malloc(sizeof(struct symbol));
     s->name = strdup(name);
     s->addr = addr;
     s->decl = strdup(decl);
@@ -64,7 +70,11 @@ void add_symbol(const char *name, void *addr, const char *decl) {
 }
 
 void delete_symbol(const char *name) {
-    remove_symbol(symbol_table, name);
+    struct symbol *s;
+    if((s = remove_symbol(symbol_table, name))) {
+        free((void *) s->decl);
+        free(s);
+    }
 }
 
 void provide_symbols(TCCState *tccs) {
@@ -103,7 +113,6 @@ void symbols_close(void) {
         struct hashtable_itr *itr = hashtable_iterator(symbol_table);
         do {
             struct symbol *s = hashtable_iterator_value(itr);
-            free((void *) s->name);
             free((void *) s->decl);
             free(s);
         } while(hashtable_iterator_remove(itr));
