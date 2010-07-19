@@ -29,9 +29,9 @@ void run(TCCState *tccs);
 void add_directive(const char *directive);
 
 /**
- * Link against the given library in subsequent compilations.
+ * Set the given TCC option in subsequent compilations.
  */
-void add_library(const char *lib);
+void add_tcc_opt(int (*fn)(TCCState *, const char *), const char *value);
 
 /**
  * Free the compiler data structures.

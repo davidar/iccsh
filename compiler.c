@@ -29,6 +29,10 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#ifdef DEBUG
+#include <execinfo.h>
+#endif
+
 #include <util/debug.h>
 #include <util/io.h>
 #include <util/list.h>
@@ -40,12 +44,17 @@
 
 #define SOURCE_TEMPLATE "%s\n;\nvoid main(void) {\n%s\n;\n}\n"
 
+struct tcc_opt {
+    int (*fn)(TCCState *, const char *);
+    const char *value;
+};
+
 static struct list *directives;
-static struct list *libs;
+static struct list *tcc_opts;
 
 void compiler_init(void) {
     directives = create_list();
-    libs = create_list();
+    tcc_opts = create_list();
 }
 
 TCCState *compile(const char *global, const char *local) {
@@ -56,10 +65,14 @@ TCCState *compile(const char *global, const char *local) {
     provide_symbols(tccs);
 
     struct list_node *n;
-    for(n = list_first(libs); n; n = list_node_next(n)) {
-        const char *name = list_node_value(n);
-        DEBUG_PRINTF("Adding lib%s\n", name);
-        tcc_add_library(tccs, name);
+    for(n = list_first(tcc_opts); n; n = list_node_next(n)) {
+        struct tcc_opt *opt = list_node_value(n);
+#ifdef DEBUG
+        void *f = (void *) opt->fn;
+        DEBUG_PRINTF("Adding TCC option %s: \"%s\"\n",
+                *backtrace_symbols(&f, 1), opt->value);
+#endif
+        opt->fn(tccs, opt->value);
     }
 
     char *buf = strdup("");
@@ -121,11 +134,18 @@ void add_directive(const char *directive) {
     list_append(directives, (void *) line);
 }
 
-void add_library(const char *lib) {
-    list_append(libs, (void *) strdup(lib));
+void add_tcc_opt(int (*fn)(TCCState *, const char *), const char *value) {
+    struct tcc_opt *opt = malloc(sizeof(struct tcc_opt));
+    opt->fn = fn;
+    opt->value = strdup(value);
+    list_append(tcc_opts, (void *) opt);
 }
 
 void compiler_close(void) {
     list_destroy(directives, 1);
-    list_destroy(libs, 1);
+    for(struct list_node *n = list_first(tcc_opts); n; n = list_node_next(n)) {
+        struct tcc_opt *opt = list_node_value(n);
+        free((void *) opt->value);
+    }
+    list_destroy(tcc_opts, 1);
 }

@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Iinstall/include -Ithirdparty/hashtable -Ithirdparty/cutil/include -Ithirdparty/linenoise -std=gnu99
-DFLAGS = -g -DDEBUG
+DFLAGS = -g -DDEBUG -rdynamic
 XFLAGS = 
 LDFLAGS = -Linstall/lib -Lthirdparty/hashtable -Lthirdparty/cutil -ltcc -lhashtable -lcutil -lm -ldl
 PROG = iccsh

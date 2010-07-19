@@ -139,7 +139,7 @@ static void command_info(char *name) {
 
 static void command_library(char *lib) {
     if(!lib) return;
-    add_library(lib);
+    add_tcc_opt(tcc_add_library, lib);
 }
 
 static void command_printf(char *args) {
