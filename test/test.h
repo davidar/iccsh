@@ -1,0 +1,1 @@
+#define LIFE 42

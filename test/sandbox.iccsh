@@ -1,0 +1,8 @@
+:include stdlib
+*NULL = 1
+:printf %p NULL
+exit(42)
+:printf %d 42
+:sandbox off
+*NULL = 1
+:printf %p NULL

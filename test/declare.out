@@ -1,0 +1,7 @@
+void (*fn)(void)
+struct {
+    int x, y;
+} coords
+4,2
+const int x
+42

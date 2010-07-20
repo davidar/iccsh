@@ -1,0 +1,4 @@
+:declare x int x = 4
+:declare y int y = 2
+:printf x=%d,y=%d x, y
+%d x+y

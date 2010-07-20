@@ -11,6 +11,9 @@ all: thirdparty ${PROG}
 debug:
 	$(MAKE) XFLAGS='${DFLAGS}'
 
+test: FORCE
+	cd test && ./test.sh
+
 clean:
 	rm -f ${PROG} ${OBJS}
 

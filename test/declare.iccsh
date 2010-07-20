@@ -1,0 +1,14 @@
+:declare fn void (*fn)(void)
+:info fn
+
+:declare coords
+struct {
+    int x, y;
+} coords = { 4, 2 }
+
+:info coords
+:printf %d,%d coords.x, coords.y
+
+const int x = 42
+:info x
+:printf %d x

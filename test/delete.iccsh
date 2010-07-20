@@ -1,0 +1,10 @@
+:declare x int x
+:eval x = 42
+:info x
+:printf %d x
+
+:delete x
+:declare x const char *x
+:eval x = "hello"
+:info x
+:printf %s x

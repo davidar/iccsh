@@ -1,0 +1,2 @@
+:declare foo_bar_42 const int foo_bar_42 = 42
+foo_bar_42

@@ -1,0 +1,16 @@
+:function hello
+void hello(const char *name) {
+    printf("Hello %s!\n", name);
+}
+
+:eval hello("world")
+
+:function fib
+void fib(int n) {
+    if(n < 2)
+        return n;
+    else
+        return fib(n-1) + fib(n-2);
+}
+
+:printf %d fib(12)

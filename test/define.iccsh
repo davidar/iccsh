@@ -1,0 +1,17 @@
+:define LIFE (40+2)
+:printf %d LIFE
+
+:define
+PRINT3(...)
+    printf("%d %d %d\n", __VA_ARGS__)
+
+:eval PRINT3(0, 4, 2)
+
+:define STRINGIFY(arg) #arg
+:printf %s STRINGIFY(1+2=3)
+
+:define STRINGIFY_MACRO(arg) STRINGIFY(arg)
+:printf %s STRINGIFY_MACRO(LIFE)
+
+:undefine LIFE
+:printf %s STRINGIFY_MACRO(LIFE)

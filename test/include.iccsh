@@ -1,0 +1,8 @@
+:include <stdlib.h>
+:printf %p NULL
+
+:include math
+:printf %.16f M_PI
+
+:include "test.h"
+:printf %d LIFE

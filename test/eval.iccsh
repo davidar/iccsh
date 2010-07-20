@@ -1,0 +1,17 @@
+:declare x int x
+:declare y int y
+x = 4
+:printf %d x
+y = 2
+:printf %d y
+
+:eval
+x ^= y;
+y ^= x;
+x ^= y;
+
+:printf %d,%d x, y
+
+:declare i int i
+for(i = 0; i < 10; i++) \
+    printf("%d\n", i);
