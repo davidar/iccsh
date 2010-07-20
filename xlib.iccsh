@@ -1,0 +1,10 @@
+:sandbox off
+:i X11/Xlib
+:l X11
+:d display Display *display
+display = XOpenDisplay("")
+:d screen Screen *screen
+screen = XScreenOfDisplay(display, 0)
+:p width=%d\nheight=%d\ndepth=%d \
+    screen->width, screen->height, screen->root_depth
+XCloseDisplay(display)
