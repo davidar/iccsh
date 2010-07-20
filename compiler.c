@@ -52,6 +52,14 @@ struct tcc_opt {
 static struct list *directives;
 static struct list *tcc_opts;
 
+static int attempt_compile(void) {
+    TCCState *tccs = compile("", "");
+    if(!tccs)
+        return 0;
+    tcc_delete(tccs);
+    return 1;
+}
+
 void compiler_init(void) {
     directives = create_list();
     tcc_opts = create_list();
@@ -85,6 +93,7 @@ TCCState *compile(const char *global, const char *local) {
 
     DEBUG_PRINTF("Compiling...\n%s\n", buf);
     if(tcc_compile_string(tccs, buf) == -1) {
+        DEBUG_PRINTF("Compilation failed\n");
         tcc_delete(tccs);
         tccs = NULL;
     }
@@ -137,14 +146,18 @@ void run(TCCState *tccs, int sandbox) {
 
 void add_directive(const char *directive) {
     char *line; asprintf(&line, "%s\n", directive);
-    list_append(directives, (void *) line);
+    struct list_node *n = list_append(directives, (void *) line);
+    if(!attempt_compile())
+        list_remove(directives, n);
 }
 
 void add_tcc_opt(int (*fn)(TCCState *, const char *), const char *value) {
     struct tcc_opt *opt = malloc(sizeof(struct tcc_opt));
     opt->fn = fn;
     opt->value = strdup(value);
-    list_append(tcc_opts, (void *) opt);
+    struct list_node *n = list_append(tcc_opts, (void *) opt);
+    if(!attempt_compile())
+        list_remove(tcc_opts, n);
 }
 
 void compiler_close(void) {
