@@ -76,6 +76,13 @@ lines by ending lines with a '\' character.
     e.g. :include <stdio.h>  =>  #include <stdio.h>
     e.g. :include stdio      =>  #include <stdio.h>
 
+:I
+:ipath
+:incpath
+:includepath {path}
+    Add the given include path (equivalent to -I compiler option).
+    e.g. :includepath /usr/include/libusb-1.0
+
 :info {identifier}
     Display information about the given identifier.
     The command name may be omitted.
@@ -87,6 +94,13 @@ lines by ending lines with a '\' character.
 :library {library}
     Link against the given library (equivalent to -l compiler option).
     e.g. :library m
+
+:L
+:lpath
+:libpath
+:librarypath {path}
+    Add the given library path (equivalent to -L compiler option).
+    e.g. :librarypath /usr/local/lib
 
 :p
 :printf {format} {arg}[, args...]

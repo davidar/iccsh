@@ -128,6 +128,11 @@ static void command_include(char *file) {
     add_directive(directive); free(directive);
 }
 
+static void command_includepath(char *path) {
+    if(!path) return;
+    add_tcc_opt(tcc_add_include_path, path);
+}
+
 static void command_info(char *name) {
     if(!name) return;
     const char *decl = symbol_declaration(name);
@@ -142,6 +147,11 @@ static void command_info(char *name) {
 static void command_library(char *lib) {
     if(!lib) return;
     add_tcc_opt(tcc_add_library, lib);
+}
+
+static void command_librarypath(char *path) {
+    if(!path) return;
+    add_tcc_opt(tcc_add_library_path, path);
 }
 
 static void command_printf(char *args) {
@@ -184,47 +194,57 @@ struct command {
 };
 
 static struct command commands[] = {
-    { "declare",  command_declare  },
-    { "decl",     command_declare  },
-    { "d",        command_declare  },
+    { "declare",      command_declare     },
+    { "decl",         command_declare     },
+    { "d",            command_declare     },
 
-    { "define",   command_define   },
-    { "def",      command_define   },
+    { "define",       command_define      },
+    { "def",          command_define      },
 
-    { "delete",   command_delete   },
-    { "del",      command_delete   },
+    { "delete",       command_delete      },
+    { "del",          command_delete      },
 
-    { "eval",     command_eval     },
+    { "eval",         command_eval        },
 
-    { "function", command_function },
-    { "func",     command_function },
-    { "f",        command_function },
+    { "function",     command_function    },
+    { "func",         command_function    },
+    { "f",            command_function    },
 
-    { "help",     command_help     },
-    { "h",        command_help     },
+    { "help",         command_help        },
+    { "h",            command_help        },
 
-    { "include",  command_include  },
-    { "inc",      command_include  },
-    { "i",        command_include  },
+    { "include",      command_include     },
+    { "inc",          command_include     },
+    { "i",            command_include     },
 
-    { "info",     command_info     },
+    { "includepath",  command_includepath },
+    { "incpath",      command_includepath },
+    { "ipath",        command_includepath },
+    { "I",            command_includepath },
 
-    { "library",  command_library  },
-    { "lib",      command_library  },
-    { "l",        command_library  },
+    { "info",         command_info        },
 
-    { "printf",   command_printf   },
-    { "p",        command_printf   },
+    { "library",      command_library     },
+    { "lib",          command_library     },
+    { "l",            command_library     },
 
-    { "quit",     command_quit     },
-    { "q",        command_quit     },
+    { "librarypath",  command_librarypath },
+    { "libpath",      command_librarypath },
+    { "lpath",        command_librarypath },
+    { "L",            command_librarypath },
 
-    { "sandbox",  command_sandbox  },
+    { "printf",       command_printf      },
+    { "p",            command_printf      },
 
-    { "undefine", command_undefine },
-    { "undef",    command_undefine },
+    { "quit",         command_quit        },
+    { "q",            command_quit        },
 
-    { NULL,       command_not_found}
+    { "sandbox",      command_sandbox     },
+
+    { "undefine",     command_undefine    },
+    { "undef",        command_undefine    },
+
+    { NULL,           command_not_found   }
 };
 
 void (*command(const char *name))(char *) {
