@@ -19,6 +19,7 @@ test: FORCE
 dist:
 	git clone ${GIT_REPO} iccsh-${VERSION}
 	cd iccsh-${VERSION}/thirdparty && $(MAKE) .submodules
+	rm -rf iccsh-${VERSION}/thirdparty/tinycc/win32
 	tar -zcvf iccsh-${VERSION}.tar.gz --exclude='.git*' iccsh-${VERSION}
 	rm -rf iccsh-${VERSION}
 
