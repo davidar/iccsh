@@ -35,8 +35,6 @@
 #include "symbols.h"
 #include "token.h"
 
-#define VERSION "0.1dev"
-
 static char *get_line(void) {
     char *line = linenoise(">>> ");
     if(!line)
