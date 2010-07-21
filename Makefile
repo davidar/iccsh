@@ -1,4 +1,4 @@
-VERSION = 0.1dev
+VERSION = 0.1
 CC = gcc
 CFLAGS = -Iinstall/include -Ithirdparty/hashtable -Ithirdparty/cutil/include -Ithirdparty/linenoise -std=gnu99 -DVERSION='"${VERSION}"'
 DFLAGS = -g -DDEBUG -rdynamic
