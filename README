@@ -1,9 +1,0 @@
-iCCsh[1] is an interactive C Compiler shell, based upon TinyCC (TCC)[2].
-
-Run `make && ./iccsh` to compile and execute. Type 'help' within the shell for
-usage information.
-
-See the project page[1] for further information.
-
-[1] http://da.vidr.cc/projects/iccsh/
-[2] http://bellard.org/tcc/
